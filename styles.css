@@ -1,0 +1,44 @@
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+.container {
+  margin: 24px auto;
+  width: 90%;
+  display: flex;
+  border: 1px solid black;
+  padding-bottom: 280px;
+}
+.main {
+  width: 70%;
+  padding: 24px;
+}
+.side {
+  width: 30%;
+  padding: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+}
+.side ul {
+  list-style: none;
+  counter-reset: section;
+  padding-left: 0;
+  position: sticky;
+  top: 24px;
+}
+.side ul h3 {
+  margin: 0;
+  display: inline;
+}
+.side ul li:before {
+  counter-increment: section;
+  content: counters(section, ".") ". ";
+}
+.side ul ul {
+  padding-left: 24px;
+}
+.side li {
+  margin-top: 8px;
+}

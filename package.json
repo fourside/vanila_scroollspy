@@ -1,0 +1,24 @@
+{
+  "name": "vanila_scrollspy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "reload -d .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fourside/vanila_scroollspy.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fourside/vanila_scroollspy/issues"
+  },
+  "homepage": "https://github.com/fourside/vanila_scroollspy#readme",
+  "devDependencies": {
+    "reload": "^3.1.0"
+  }
+}
