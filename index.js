@@ -3,18 +3,23 @@
 })();
 
 function init() {
-  const options = {
+  const openMenuOptions = {
     root: null,
     rootMargin: "16px",
     threshold: 0, 
   };
-  const menuOpenObserver = new IntersectionObserver(openMenu, options);
+  const menuOpenObserver = new IntersectionObserver(openMenu, openMenuOptions);
   ["#western", "#eastern"].forEach((id) => {
     const target = document.querySelector(id);
     menuOpenObserver.observe(target);
   });
 
-  const activateMenuObserver = new IntersectionObserver(activateMenu, options);
+  const activeMenuOptions = {
+    root: null,
+    rootMargin: "16px",
+    threshold: 0.5, 
+  };
+  const activateMenuObserver = new IntersectionObserver(activateMenu, activeMenuOptions);
   document.querySelectorAll("section section").forEach((target) => {
     activateMenuObserver.observe(target);
   });
