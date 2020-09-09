@@ -44,8 +44,12 @@ html, body {
   content: counters(section, ".") ". ";
 }
 .side ul ul {
+  transition: max-height 0.3s;
+  max-height: 0;
+  overflow: hidden;
 }
 .side ul ul.open {
+  max-height: 10em;
 }
 .side li {
   margin-top: 8px;
