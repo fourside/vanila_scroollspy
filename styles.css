@@ -44,12 +44,19 @@ html, body {
   content: counters(section, ".") ". ";
 }
 .side ul ul {
-  padding-left: 24px;
-  display: none;
+}
+.side ul ul.open {
 }
 .side li {
   margin-top: 8px;
 }
 .side a {
   text-decoration: none;
+}
+.side ul ul li {
+  padding-left: 24px;
+}
+.side ul ul li.active {
+  padding-left: 20px;
+  border-left: 4px solid #3399dd;
 }
