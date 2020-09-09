@@ -25,6 +25,9 @@ function init() {
   };
   const activateMenuObserver = new IntersectionObserver(activateMenu, activeMenuOptions);
   document.querySelectorAll("section section").forEach((target) => {
+    const id = target.getAttribute("id");
+    const menuAnchor = document.querySelector(`a[href='#${id}']`);
+    elementMap.set(id, menuAnchor.parentElement);
     activateMenuObserver.observe(target);
   });
 }
@@ -51,10 +54,10 @@ function openMenu(entries, observer) {
 function activateMenu(entries, observer) {
   entries.forEach((entry) => {
     if (entry.isIntersecting) {
-      document.querySelectorAll(".active").forEach((target) => target.classList.remove("active"));
+      Array.from(elementMap.values()).forEach(element => element.classList.remove("active"));
       const id = entry.target.getAttribute("id");
-      const target = document.querySelector(`a[href='#${id}']`);
-      target.parentElement.classList.add("active");
+      const target = elementMap.get(id);
+      target.classList.add("active");
     }
   });
 }
