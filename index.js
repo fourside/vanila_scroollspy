@@ -2,6 +2,8 @@
   document.addEventListener("DOMContentLoaded", init);
 })();
 
+const elementMap = new Map();
+
 function init() {
   const openMenuOptions = {
     root: null,
@@ -10,6 +12,8 @@ function init() {
   };
   const menuOpenObserver = new IntersectionObserver(openMenu, openMenuOptions);
   ["#western", "#eastern"].forEach((id) => {
+    const menuAnchor = document.querySelector(`a[href='${id}']`);
+    elementMap.set(id.replace("#", ""), menuAnchor.parentElement.nextSibling.nextSibling);
     const target = document.querySelector(id);
     menuOpenObserver.observe(target);
   });
@@ -32,10 +36,10 @@ function init() {
 function openMenu(entries, observer) {
   entries.forEach((entry) => {
     if (entry.isIntersecting) {
-      document.querySelectorAll(".side .open").forEach((target) => target.classList.remove("open"));
+      Array.from(elementMap.values()).forEach(element => element.classList.remove("open"));
       const id = entry.target.getAttribute("id");
-      const target = document.querySelector(`a[href='#${id}']`);
-      target.parentElement.nextSibling.nextSibling.classList.add("open");
+      const target = elementMap.get(id);
+      target.classList.add("open");
     }
   });
 }
