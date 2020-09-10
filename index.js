@@ -1,19 +1,21 @@
+"use strict";
+
 (function() {
   document.addEventListener("DOMContentLoaded", init);
 })();
 
-const elementMap = new Map();
 
 function init() {
+  const menuElementCache = new Map();
   const openMenuOptions = {
     root: null,
     rootMargin: "16px",
     threshold: 0, 
   };
-  const menuOpenObserver = new IntersectionObserver(openMenu, openMenuOptions);
+  const menuOpenObserver = observerFactory(openMenuOptions, menuElementCache, openMenu);
   ["#western", "#eastern"].forEach((id) => {
     const menuAnchor = document.querySelector(`a[href='${id}']`);
-    elementMap.set(id.replace("#", ""), menuAnchor.parentElement.nextSibling.nextSibling);
+    menuElementCache.set(id.replace("#", ""), menuAnchor.parentElement.nextSibling.nextSibling);
     const target = document.querySelector(id);
     menuOpenObserver.observe(target);
   });
@@ -23,41 +25,49 @@ function init() {
     rootMargin: "16px",
     threshold: 0.5, 
   };
-  const activateMenuObserver = new IntersectionObserver(activateMenu, activeMenuOptions);
+  const activateMenuObserver = observerFactory(activeMenuOptions, menuElementCache, activateMenu);
   document.querySelectorAll("section section").forEach((target) => {
     const id = target.getAttribute("id");
     const menuAnchor = document.querySelector(`a[href='#${id}']`);
-    elementMap.set(id, menuAnchor.parentElement);
+    menuElementCache.set(id, menuAnchor.parentElement);
     activateMenuObserver.observe(target);
   });
 }
 
 /**
- * @param {IntersectionObserverEntry[]} entries 
- * @param {IntersectionObserver} observer 
+ * @param {Element} intersectingElement
+ * @param {Map<string, Element>} cache 
  */
-function openMenu(entries, observer) {
-  entries.forEach((entry) => {
-    if (entry.isIntersecting) {
-      Array.from(elementMap.values()).forEach(element => element.classList.remove("open"));
-      const id = entry.target.getAttribute("id");
-      const target = elementMap.get(id);
-      target.classList.add("open");
-    }
-  });
+function openMenu(intersectingElement, cache) {
+  Array.from(cache.values()).forEach(element => element.classList.remove("open"));
+  const id = intersectingElement.getAttribute("id");
+  const target = cache.get(id);
+  target.classList.add("open");
 }
 
 /**
- * @param {IntersectionObserverEntry[]} entries 
- * @param {IntersectionObserver} observer 
+ * @param {Element} intersectingElement
+ * @param {Map<string, Element>} cache 
  */
-function activateMenu(entries, observer) {
-  entries.forEach((entry) => {
-    if (entry.isIntersecting) {
-      Array.from(elementMap.values()).forEach(element => element.classList.remove("active"));
-      const id = entry.target.getAttribute("id");
-      const target = elementMap.get(id);
-      target.classList.add("active");
-    }
-  });
+function activateMenu(intersectingElement, cache) {
+  Array.from(cache.values()).forEach(element => element.classList.remove("active"));
+  const id = intersectingElement.getAttribute("id");
+  const target = cache.get(id);
+  target.classList.add("active");
+}
+
+/**
+ * 
+ * @param {Object} options 
+ * @param {Map<string, Element} cache 
+ * @param {Function} callback 
+ */
+function observerFactory(options, cache, callback) {
+  return new IntersectionObserver((entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        callback(entry.target, cache);
+      }
+    })
+  }), options);
 }
