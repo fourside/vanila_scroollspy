@@ -12,7 +12,7 @@ function init() {
     rootMargin: "16px",
     threshold: 0, 
   };
-  const menuOpenObserver = observerFactory(openMenuOptions, menuElementCache, openMenu);
+  const menuOpenObserver = observerFactory(openMenuOptions, openMenu, menuElementCache);
   document.querySelectorAll(".main > section").forEach((target) => {
     const id = target.getAttribute("id");
     const menuAnchor = document.querySelector(`a[href='#${id}']`);
@@ -25,7 +25,7 @@ function init() {
     rootMargin: "16px",
     threshold: 0.5, 
   };
-  const activateMenuObserver = observerFactory(activeMenuOptions, menuElementCache, activateMenu);
+  const activateMenuObserver = observerFactory(activeMenuOptions, activateMenu, menuElementCache);
   document.querySelectorAll("section section").forEach((target) => {
     const id = target.getAttribute("id");
     const menuAnchor = document.querySelector(`a[href='#${id}']`);
@@ -59,10 +59,10 @@ function activateMenu(intersectingElement, cache) {
 /**
  * 
  * @param {Object} options 
- * @param {Map<string, Element} cache 
  * @param {Function} callback 
+ * @param {Map<string, Element} cache 
  */
-function observerFactory(options, cache, callback) {
+function observerFactory(options, callback, cache) {
   return new IntersectionObserver((entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
