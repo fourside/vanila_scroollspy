@@ -13,10 +13,10 @@ function init() {
     threshold: 0, 
   };
   const menuOpenObserver = observerFactory(openMenuOptions, menuElementCache, openMenu);
-  ["#western", "#eastern"].forEach((id) => {
-    const menuAnchor = document.querySelector(`a[href='${id}']`);
-    menuElementCache.set(id.replace("#", ""), menuAnchor.parentElement.nextSibling.nextSibling);
-    const target = document.querySelector(id);
+  document.querySelectorAll(".main > section").forEach((target) => {
+    const id = target.getAttribute("id");
+    const menuAnchor = document.querySelector(`a[href='#${id}']`);
+    menuElementCache.set(id, menuAnchor.parentElement.nextSibling.nextSibling);
     menuOpenObserver.observe(target);
   });
 
